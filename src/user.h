@@ -15,14 +15,9 @@
 #include "dbg.h"
 
 typedef struct _QuestVote {
-	int questionId;
+	long questionId;
 	int voted_count;
 } QuestVote;
-
-extern queue_t *unvisitedUser;
-extern set_t *visitedUser;
-
-extern set_t *visitedQuestions;
 
 void initCustomType();
 string_t* getUser();

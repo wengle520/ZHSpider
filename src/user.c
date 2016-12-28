@@ -6,7 +6,7 @@
  */
 
 #include "user.h"
-
+#include "global.h"
 string_t* getUser() {
 	string_t *ret = create_string();
 	if (ret == NULL) {
@@ -19,20 +19,20 @@ string_t* getUser() {
 		queue_pop(unvisitedUser);
 	} else {
 		string_destroy(ret);
-		log_warn("user queue was empty!!! process will exit.");
+		log_warn("user queue is empty. Process will exit. Finished!!!");
 		return NULL;
 	}
 	return ret;
 }
 
 static void _QuestVote_init(const void* cpv_input, void* pv_output) {
-	((QuestVote*) cpv_input)->questionId = 0;
+	((QuestVote*) cpv_input)->questionId = 0L;
 	((QuestVote*) cpv_input)->voted_count = 0;
 	*(bool_t*) pv_output = true;
 }
 
 static void _QuestVote_destroy(const void* cpv_input, void* pv_output) {
-	((QuestVote*) cpv_input)->questionId = 0;
+	((QuestVote*) cpv_input)->questionId = 0L;
 	((QuestVote*) cpv_input)->voted_count = 0;
 	*(bool_t*) pv_output = true;
 }

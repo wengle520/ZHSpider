@@ -30,20 +30,29 @@
 
 queue_t *unvisitedUser;
 set_t *visitedUser;
+set_t *visitedQuestions;
 
 /* Buffer where events are returned */
 int epollfd;
 struct epoll_event *events;
 
+typedef list_t* (*JSONFUNC)(string_t *responseJson, int *total, int preprocess);
 
 int init();
 int init_epoll();
-void getPage();
-int prepareAnswersRequest(char *reqBuf, int *size, string_t *reqUser);
 connection *makeConnection(int *reqfd);
-
 static int make_socket_non_blocking(int sfd);
-static int parseResponse(string_t *response, char *keywords);
-static cJSON* parseJsonData(string_t *responseJson);
+
+void getPage();
+
+int prepareGetTotal(char *reqBuf, int *size, string_t *reqUser, char *type);
+int prepareAnswersRequest(char *reqBuf, int *size, string_t *reqUser, int times);
+int prepareFollowersRequest(char *reqBuf, int *size, string_t *reqUser, int times);
+
+static int parseResponse(string_t *response, list_t **result, JSONFUNC func, int preprocess);
+static list_t* parseAnswersJsonData(string_t *responseJson, int *total, int preprocess);
+static list_t* parseFollowersJsonData(string_t *responseJson, int *total, int preprocess);
+
+int writeToFile(int fd, list_t *result);
 
 #endif /* SRC_SPIDER_H_ */
