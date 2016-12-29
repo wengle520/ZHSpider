@@ -17,6 +17,7 @@ So we should take event triggered model.I used system call 'epoll' for high effi
 
 #### keys
 Since we have many request, we should save state for current request.So we should use a state machine, which records our current state and reminds states that we been.
+
 ![stateMachine](./pics/stateMachine.png)
 
 ### Result：
