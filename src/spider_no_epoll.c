@@ -62,7 +62,7 @@ int init_epoll() {
 }
 
 void getPage() {
-	int reqfd, i;
+	int reqfd;
 	int retval = 0;
 	char reqBuf[MAXREQSIZE] = {0};
 	connection *con;
@@ -110,26 +110,18 @@ void getPage() {
 				curConns++;
 			}
 		}while(0);
-		int n = epoll_wait(epollfd, events, MAXEVENTS, EPOLLTIMEOUT);
-		check(n >= 0, "epoll_wait");
-		StateMachine *pState;
-		for(i = 0; i < n; i++){
-			pState = (StateMachine *)events[i].data.ptr;
-			switch(pState->iState){
-				case GETTOTALANSWERNUM:
-					retval = sslRead(con, &responsePage);
-					break;
-				case GETANSWERS:
-					break;
-				case GETTOTALFOLLOWERNUM:
-					break;
-				case GETFOLLOWERS:
-					break;
-				default:
-					break;
-			}
-		}
 
+
+		reqUser = getUser();
+		if(reqUser == NULL && !queue_empty(unvisitedUser)){
+			continue;
+		}else if(reqUser == NULL){
+			break;
+		}
+		con = makeConnection(&reqfd);
+		if(con == NULL || reqfd == 0){
+			continue;
+		}
 		while(1){
 			int total = 0;
 			int curTimes = 0;
@@ -521,12 +513,11 @@ static int make_socket_non_blocking(int sfd) {
 	return 0;
 }
 
-int main(int argc, char **argv) {
-	init();
-	init_epoll();
-	getPage();
-	return 0;
-}
+//int main(int argc, char **argv) {
+//	init();
+//	getPage();
+//	return 0;
+//}
 
 void print() {
 

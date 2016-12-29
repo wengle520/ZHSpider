@@ -35,7 +35,7 @@ set_t *visitedQuestions;
 /* Buffer where events are returned */
 int epollfd;
 struct epoll_event *events;
-
+int curConns;
 typedef list_t* (*JSONFUNC)(string_t *responseJson, int *total, int preprocess);
 
 int init();

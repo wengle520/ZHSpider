@@ -28,15 +28,6 @@
 #include "dbg.h"
 #include "global.h"
 
-// Simple structure to keep track of the handle, and
-// of what needs to be freed later.
-struct _connection{
-    int socket;
-    SSL *sslHandle;
-    SSL_CTX *sslContext;
-};
-
-typedef struct _connection connection;
 
 int tcpConnect();
 connection *sslConnect(void);
