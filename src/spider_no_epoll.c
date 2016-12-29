@@ -73,45 +73,6 @@ void getPage() {
 	int size = 0;
 
 	while (1) {
-		// start from seeds
-		do{
-			if(curConns < MAXCONNS){
-				reqUser = getUser();
-				if(reqUser == NULL && !queue_empty(unvisitedUser)){
-					continue;
-				}else if(reqUser == NULL){
-					break;
-				}
-				con = makeConnection(&reqfd);
-				if(con == NULL || reqfd == 0){
-					continue;
-				}
-				size = MAXREQSIZE;
-				retval = prepareGetTotal(reqBuf, &size, reqUser,  ANSWERS);
-				if(retval < 0){
-					string_destroy(reqUser);
-					break;
-				}
-				retval = sslWrite(con, reqBuf, size);
-				if(retval < 0){
-					log_err("getPage->write");
-					break;
-				}
-				StateMachine *pState = (StateMachine*)malloc(sizeof(StateMachine));
-				pState->con = con;
-				pState->iState = GETTOTALANSWERNUM;
-				pState->iLast = 0;
-
-				struct epoll_event event;
-				event.data.ptr = (void*)pState;
-				event.events = EPOLLIN | EPOLLET;
-				retval = epoll_ctl(epollfd, EPOLL_CTL_ADD, reqfd, &event);
-				check(retval == 0, "epoll_add");
-				curConns++;
-			}
-		}while(0);
-
-
 		reqUser = getUser();
 		if(reqUser == NULL && !queue_empty(unvisitedUser)){
 			continue;

@@ -12,6 +12,9 @@
 #include <cstl/cset.h>
 #include <cstl/cstring.h>
 
+#include <openssl/rand.h>
+#include <openssl/ssl.h>
+#include <openssl/err.h>
 
 #define ECOMPLETE 10 /* receive data incomplete*/
 
